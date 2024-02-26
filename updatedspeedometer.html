@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speedometer</title>
+
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+            flex-direction: column;
+        }
+
+        .speedometer-container {
+            width: 23em;
+            height:23em;
+            border: solid black 0.2em;
+            margin: 2em auto;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .center-point {
+            width: 1em;
+            height: 1em;
+            background-color: black;
+            border-radius: 50%;
+            position: absolute;
+            /* (15 - 0.4 (boder) - 0.7(centerpointsize))/2 = 6.95 */
+            top: 10.8em; 
+            left: 10.8em;
+            z-index: 5;
+        }
+
+        .speedometer-scale {
+            width: 0.4em;
+            height: 21.5em;
+            background-color: black;
+            position: absolute;
+            /* (14.6 - 0.25)/2 */
+            left: 11.1em;
+            top: 0.65em;
+            border: 0.001em solid black;
+        }
+
+        .scale-position-1 {
+            transform: rotate(-90deg);
+        }
+
+        .scale-position-2 {
+            transform: rotate(-80deg);
+        }
+
+        .scale-position-3 {
+            transform: rotate(-70deg);
+        }
+
+        .scale-position-4 {
+            transform: rotate(-60deg);
+        }
+
+        .scale-position-5 {
+            transform: rotate(-50deg);
+        }
+
+        .scale-position-6 {
+            transform: rotate(-40deg);
+        }
+
+        .scale-position-7 {
+            transform: rotate(-30deg);
+        }
+
+        .scale-position-8 {
+            transform: rotate(-20deg);
+        }
+
+        .scale-position-9 {
+            transform: rotate(-10deg);
+        }
+
+        .scale-position-10 {
+            transform: rotate(-0deg);
+        }
+
+        .scale-position-11 {
+            transform: rotate(10deg);
+        }
+
+        .scale-position-12 {
+            transform: rotate(20deg);
+        }
+
+        .scale-position-13 {
+            transform: rotate(30deg);
+        }
+
+        .scale-position-14 {
+            transform: rotate(40deg);
+        }
+
+        .scale-position-15 {
+            transform: rotate(50deg);
+        }
+
+        .scale-position-16 {
+            transform: rotate(60deg);
+        }
+
+        .scale-position-17 {
+            transform: rotate(70deg);
+        }
+
+        .scale-position-18 {
+            transform: rotate(80deg);
+        }
+
+        .scale-position-19 {
+            transform: rotate(90deg);
+            height: 13em;
+            left: 15.36em;
+            top: 4.9em;
+        }
+        .speedometer-center-hide {
+            width: 20em;
+            
+            height: 20em;
+            background-color: white;
+            border-radius: 50%;
+            position: absolute;
+            /* (14.6 - 12.495)/2 */
+            top: 1.3em;
+            left: 1.3em;
+            z-index: 4;
+        }
+
+        .speedometer-bottom-hide {
+            width: 25em;
+            height: 10.88em;
+            background-color: white;
+            position: absolute;
+            
+            z-index: 5;
+            top: 12em;
+            left: -1.2em;
+            border-top: 0.2em solid black;
+        }
+
+        .arrow-container {
+            width: 7.95em;
+            height: 7.95em;
+            background-color: transparent;
+            position: absolute;
+            z-index: 7;
+            top: 7.325em;
+            left: 7.323em;
+            /* background-color: blue; */
+        }
+
+        .arrow-wrapper {
+            width: 7.95em;
+            height: 7.95em;
+            background-color: transparent;
+            position: relative;
+            transition: all ease-out 1s;
+        }
+
+        .arrow {
+            width: 9em;
+            height: 0.2em;
+            background-color: rgb(255, 85, 0);
+            position: absolute;
+            top: 3.85em;
+            right: 3.9em;
+        }
+
+        #speed-0 {
+            transform: rotate(90deg);
+        }
+
+        .btn-container {
+            width: 16em;
+            margin: 1em auto;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn-container button {
+            width: 3em;
+            height: 2em;
+            font-size: 2em;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0.1em 0.1em 0.1em #c6c6c6;
+            transition: all 0.35s;
+            border-radius: 25%;
+        }
+
+        .btn-container button:active {
+            box-shadow: 0.1em 0.1em 0.1em #ffffff;
+        }
+
+        #decrease {
+            background-color: #af4154;
+        }
+
+        #decrease:hover {
+            background-color: #c44d56;
+        }
+
+        #increase {
+            background-color: #93faa5;
+        }
+
+        #increase:hover {
+            background-color: #c2f970;
+        }
+
+        #anglebox {
+            position: absolute;
+            background-color: #24252a;
+            color: #c6c6c6;
+            /* top: 12.5em; */
+            top: 4.4em;
+            left: 9.27em;
+            width: 4em;
+            height: 4em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 25%;
+            z-index: 6;
+        }
+
+        /* graph styling */
+
+        .graphblock{
+            width: 60%;
+        }
+
+        /* mobile size screen styling */
+        @media only screen and (max-width: 600px) {
+        
+
+        .graphblock {
+          width: 95%;
+
+}
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- speedometer -->
+    <div class="speedometerblock">
+        <div class="speedometer-container">
+            <div id="anglebox">90</div>
+            <div class="center-point"></div>
+
+            <div class="speedometer-center-hide"></div>
+            <div class="speedometer-bottom-hide"></div>
+
+            <div class="arrow-container">
+                <div class="arrow-wrapper" id="speed-0">
+                    <div class="arrow"></div>
+                </div>
+            </div>
+
+
+            <div class="speedometer-scale scale-position-1"></div>
+            <div class="speedometer-scale scale-position-2"></div>
+            <div class="speedometer-scale scale-position-3"></div>
+            <div class="speedometer-scale scale-position-4"></div>
+            <div class="speedometer-scale scale-position-5"></div>
+            <div class="speedometer-scale scale-position-6"></div>
+            <div class="speedometer-scale scale-position-7"></div>
+            <div class="speedometer-scale scale-position-8"></div>
+            <div class="speedometer-scale scale-position-9"></div>
+            <div class="speedometer-scale scale-position-10"></div>
+            <div class="speedometer-scale scale-position-11"></div>
+            <div class="speedometer-scale scale-position-12"></div>
+            <div class="speedometer-scale scale-position-13"></div>
+            <div class="speedometer-scale scale-position-14"></div>
+            <div class="speedometer-scale scale-position-15"></div>
+            <div class="speedometer-scale scale-position-16"></div>
+            <div class="speedometer-scale scale-position-17"></div>
+            <div class="speedometer-scale scale-position-18"></div>
+            <div class="speedometer-scale scale-position-19"></div>
+
+        </div>
+
+        <!-- control buttons -->
+        <div class="btn-container">
+            <button id="decrease">-</button>
+            <button id="increase">+</button>
+        </div>
+    </div>
+
+
+
+    <!-- graph -->
+    <div class="graphblock">
+        <canvas id="myChart"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+
+    
+
+        const ctx = document.getElementById('myChart');
+
+        timeLabels = ['60s', '55s', '50s', '45s', '40s', '35s', '30s', '25s', '20s', '15s', '10s', '5s', '0s']; //x-axis
+        voltageData = [12, 19, 3, 5, 2, 3, 12, 12, 12, 12, 12, 12, 12];     //data, y-axis dynamically updates itself as per data so no need to worry about y-axis  
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: timeLabels, // x-axis
+                datasets: [{
+                    label: 'Voltage',
+                    data: voltageData, //y-axis
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                maintainAspectRatio: true,
+                responsive: true
+            }
+        });
+
+
+
+
+        let currentValue = 90;
+        let incrementInterval;
+        let decrementInterval;
+
+        needle = document.getElementById("speed-0");
+        plusButton = document.getElementById("increase");
+        minusButton = document.getElementById("decrease");
+
+
+        function setColors() {
+
+
+            if (currentValue == 0)
+                document.getElementsByClassName("scale-position-1")[0].style.backgroundColor = "#c6c6c6";
+            else
+                document.getElementsByClassName("scale-position-1")[0].style.backgroundColor = "#8EFFC1";
+
+            currentscale = currentValue / 10;
+            if (currentscale >= 1)
+                document.getElementsByClassName("scale-position-2")[0].style.backgroundColor = "#1DBC60";
+            else
+                document.getElementsByClassName("scale-position-2")[0].style.backgroundColor = "#c6c6c6";
+
+            if (currentscale >= 2)
+                document.getElementsByClassName("scale-position-3")[0].style.backgroundColor = "#0DAC50";
+            else
+                document.getElementsByClassName("scale-position-3")[0].style.backgroundColor = "#c6c6c6";
+
+            if (currentscale >= 3)
+                document.getElementsByClassName("scale-position-4")[0].style.backgroundColor = "#009C41";
+            else
+                document.getElementsByClassName("scale-position-4")[0].style.backgroundColor = "#c6c6c6";
+
+            if (currentscale >= 4)
+                document.getElementsByClassName("scale-position-5")[0].style.backgroundColor = "#d0da8e";
+            else
+                document.getElementsByClassName("scale-position-5")[0].style.backgroundColor = "#c6c6c6";
+
+            if (currentscale >= 5)
+                document.getElementsByClassName("scale-position-6")[0].style.backgroundColor = "#e6ff6e";
+            else
+                document.getElementsByClassName("scale-position-6")[0].style.backgroundColor = "#c6c6c6";
+
+            if (currentscale >= 6)
+                document.getElementsByClassName("scale-position-7")[0].style.backgroundColor = "#fffc7f";
+            else
+                document.getElementsByClassName("scale-position-7")[0].style.backgroundColor = "#c6c6c6";
+
+            if (currentscale >= 7)
+                document.getElementsByClassName("scale-position-8")[0].style.backgroundColor = "#fff000";
+            else
+                document.getElementsByClassName("scale-position-8")[0].style.backgroundColor = "#c6c6c6";
+
+            if (currentscale >= 8)
+                document.getElementsByClassName("scale-position-9")[0].style.backgroundColor = "#fef160";
+            else
+                document.getElementsByClassName("scale-position-9")[0].style.backgroundColor = "#c6c6c6";
+
+            if (currentscale >= 9)
+                document.getElementsByClassName("scale-position-10")[0].style.backgroundColor = "#f9bf3b";
+            else
+                document.getElementsByClassName("scale-position-10")[0].style.backgroundColor = "#c6c6c6";
+
+            if (currentscale >= 10)
+                document.getElementsByClassName("scale-position-11")[0].style.backgroundColor = "#f9b42d";
+            else
+                document.getElementsByClassName("scale-position-11")[0].style.backgroundColor = "#c6c6c6";
+
+            if (currentscale >= 11)
+                document.getElementsByClassName("scale-position-12")[0].style.backgroundColor = "#f27935";
+            else
+                document.getElementsByClassName("scale-position-12")[0].style.backgroundColor = "#c6c6c6";
+
+            if (currentscale >= 12)
+                document.getElementsByClassName("scale-position-13")[0].style.backgroundColor = "#f9690e";
+            else
+                document.getElementsByClassName("scale-position-13")[0].style.backgroundColor = "#c6c6c6";
+
+            if (currentscale >= 13)
+                document.getElementsByClassName("scale-position-14")[0].style.backgroundColor = "#f15a22";
+            else
+                document.getElementsByClassName("scale-position-14")[0].style.backgroundColor = "#c6c6c6";
+
+            if (currentscale >= 14)
+                document.getElementsByClassName("scale-position-15")[0].style.backgroundColor = "#d35400";
+            else
+                document.getElementsByClassName("scale-position-15")[0].style.backgroundColor = "#c6c6c6";
+
+            if (currentscale >= 15)
+                document.getElementsByClassName("scale-position-16")[0].style.backgroundColor = "#e74c3c";
+            else
+                document.getElementsByClassName("scale-position-16")[0].style.backgroundColor = "#c6c6c6";
+
+            if (currentscale >= 16)
+                document.getElementsByClassName("scale-position-17")[0].style.backgroundColor = "#f22613";
+            else
+                document.getElementsByClassName("scale-position-17")[0].style.backgroundColor = "#c6c6c6";
+
+            if (currentscale >= 17)
+                document.getElementsByClassName("scale-position-18")[0].style.backgroundColor = "#d91e18";
+            else
+                document.getElementsByClassName("scale-position-18")[0].style.backgroundColor = "#c6c6c6";
+
+            if (currentscale >= 18)
+                document.getElementsByClassName("scale-position-19")[0].style.backgroundColor = "#cf000f";
+            else
+                document.getElementsByClassName("scale-position-19")[0].style.backgroundColor = "#c6c6c6";
+
+
+        }
+
+        function updateSpeedometer() {
+
+            needle.style.transform = "rotate(" + currentValue + "deg)";
+            document.getElementById("anglebox").innerHTML = currentValue;
+            setColors();
+        }
+
+        function incrementValue() {
+            if (currentValue < 180) {
+                currentValue++;
+                updateSpeedometer();
+            }
+        }
+
+        function decrementValue() {
+            if (currentValue > 0) {
+                currentValue--;
+                updateSpeedometer();
+            }
+        }
+
+        function startIncrementInterval() {
+            incrementValue();
+            incrementInterval = setInterval(incrementValue, 120);
+        }
+
+        function startDecrementInterval() {
+            decrementValue();
+            decrementInterval = setInterval(decrementValue, 120);
+        }
+
+        function stopInterval() {
+            clearInterval(incrementInterval);
+            clearInterval(decrementInterval);
+            // location.href = `/${currentValue}-\n`; 
+        }
+
+        // Desktop events
+        plusButton.addEventListener('mousedown', startIncrementInterval);
+        plusButton.addEventListener('mouseup', stopInterval);
+        plusButton.addEventListener('mouseleave', stopInterval);
+
+        minusButton.addEventListener('mousedown', startDecrementInterval);
+        minusButton.addEventListener('mouseup', stopInterval);
+        minusButton.addEventListener('mouseleave', stopInterval);
+
+        // Mobile events
+        plusButton.addEventListener('touchstart', startIncrementInterval);
+        plusButton.addEventListener('touchend', stopInterval);
+        plusButton.addEventListener('touchmove', (e) => e.preventDefault());
+
+        minusButton.addEventListener('touchstart', startDecrementInterval);
+        minusButton.addEventListener('touchend', stopInterval);
+        minusButton.addEventListener('touchmove', (e) => e.preventDefault());
+
+        updateSpeedometer();
+
+    </script>
+</body>
+
+</html>
